@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=IRPF2018
+Comment=Imposto de Renda 2018
+Type=Application
+Categories=Office
+Exec=@BINDIR@/irpf2018
+Icon=@DATADIR@/irpf2018/icon.png

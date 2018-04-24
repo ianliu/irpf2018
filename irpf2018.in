@@ -1,0 +1,29 @@
+#!/bin/bash
+
+datadir=@DATADIR@
+bindir=@BINDIR@
+
+if [[ $1 = uninstall ]]; then
+	echo 'Uninstalling IRPF2018...'
+	rm $datadir/applications/irpf2018.desktop
+	rm $datadir/irpf2018/icon.png
+	rm $bindir/irpf2018
+	docker rmi irpf2018
+	echo 'Uninstalling IRPF2018...done'
+	exit 0
+fi
+
+config="${XDG_CONFIG_HOME:-$HOME/.config}/irpf.conf"
+source "$config"
+
+test -z "$datadir" && datadir="$HOME/ProgramasRFB"
+
+echo "Saving files at $datadir..."
+
+docker run --rm \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-v "${XAUTHORITY}:/tmp/xauth:ro" \
+	-v "$datadir:/home/irpf/ProgramasRFB/" \
+	-e "DISPLAY=${DISPLAY}" \
+	-e "HOST_NAME=${HOSTNAME}" \
+	irpf2018 $(id -u) $(id -g)
